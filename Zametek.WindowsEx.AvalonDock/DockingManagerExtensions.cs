@@ -86,7 +86,7 @@ namespace Zametek.WindowsEx.AvalonDock
             {
                 throw new ArgumentNullException("dockingManager");
             }
-            IList<LayoutDocument> documents = dockingManager.GetAllDocuments().ToList();
+            IEnumerable<LayoutDocument> documents = dockingManager.GetAllDocuments();
             // Separate list needed because calling Close removes the item from the IEnumerable.
             IList<LayoutDocument> documentList = documents.ToList();
             foreach (LayoutDocument document in documentList)
@@ -95,7 +95,7 @@ namespace Zametek.WindowsEx.AvalonDock
                 if (item != null)
                 {
                     item.CloseCommand.Execute(null);
-                    if (documentList.Contains(document))
+                    if (documents.Contains(document))
                     {
                         // This is where you would end up if when cancelling closing a document.
                         break;
