@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("Zametek.WindowsEx.AvalonDock")]
-[assembly: AssemblyDescription("Zametek Windows extensions for Xceed AvalonDock")]
+[assembly: AssemblyDescription("Zametek Windows extensions for Xceed AvalonDock. This package is now obsolete, please use Zametek.Windows.AvalonDock.Core instead.")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Riccardo M. Bennett-Lovsey")]
 [assembly: AssemblyProduct("Zametek.WindowsEx.AvalonDock")]
-[assembly: AssemblyCopyright("Copyright (c) 2015")]
+[assembly: AssemblyCopyright("Copyright (c) 2020")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

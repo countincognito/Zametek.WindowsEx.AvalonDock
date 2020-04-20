@@ -19,7 +19,7 @@ namespace Zametek.WindowsEx.AvalonDock
         {
             if (dockingManager == null)
             {
-                throw new ArgumentNullException("dockingManager");
+                throw new ArgumentNullException(nameof(dockingManager));
             }
             return dockingManager.GetAllLayoutContents<LayoutDocument>();
         }
@@ -28,7 +28,7 @@ namespace Zametek.WindowsEx.AvalonDock
         {
             if (dockingManager == null)
             {
-                throw new ArgumentNullException("dockingManager");
+                throw new ArgumentNullException(nameof(dockingManager));
             }
             return dockingManager.FindLayoutContent<LayoutDocument>(content);
         }
@@ -37,7 +37,7 @@ namespace Zametek.WindowsEx.AvalonDock
         {
             if (dockingManager == null)
             {
-                throw new ArgumentNullException("dockingManager");
+                throw new ArgumentNullException(nameof(dockingManager));
             }
             LayoutDocument document = dockingManager.FindDocument(content);
             LayoutItem item = dockingManager.GetLayoutItemFromModel(document);
@@ -59,7 +59,7 @@ namespace Zametek.WindowsEx.AvalonDock
         {
             if (dockingManager == null)
             {
-                throw new ArgumentNullException("dockingManager");
+                throw new ArgumentNullException(nameof(dockingManager));
             }
             if (content == null)
             {
@@ -84,7 +84,7 @@ namespace Zametek.WindowsEx.AvalonDock
         {
             if (dockingManager == null)
             {
-                throw new ArgumentNullException("dockingManager");
+                throw new ArgumentNullException(nameof(dockingManager));
             }
             IEnumerable<LayoutDocument> documents = dockingManager.GetAllDocuments();
             // Separate list needed because calling Close removes the item from the IEnumerable.
@@ -113,7 +113,7 @@ namespace Zametek.WindowsEx.AvalonDock
         {
             if (dockingManager == null)
             {
-                throw new ArgumentNullException("dockingManager");
+                throw new ArgumentNullException(nameof(dockingManager));
             }
             return dockingManager.GetAllLayoutContents<LayoutAnchorable>();
         }
@@ -122,7 +122,7 @@ namespace Zametek.WindowsEx.AvalonDock
         {
             if (dockingManager == null)
             {
-                throw new ArgumentNullException("dockingManager");
+                throw new ArgumentNullException(nameof(dockingManager));
             }
             return dockingManager.FindLayoutContent<LayoutAnchorable>(content);
         }
@@ -131,7 +131,7 @@ namespace Zametek.WindowsEx.AvalonDock
         {
             if (dockingManager == null)
             {
-                throw new ArgumentNullException("dockingManager");
+                throw new ArgumentNullException(nameof(dockingManager));
             }
             return dockingManager.FloatAnchorable(content, true);
         }
@@ -140,7 +140,7 @@ namespace Zametek.WindowsEx.AvalonDock
         {
             if (dockingManager == null)
             {
-                throw new ArgumentNullException("dockingManager");
+                throw new ArgumentNullException(nameof(dockingManager));
             }
             LayoutAnchorable anchorable = dockingManager.FindAnchorable(content);
             bool shown = dockingManager.ShowAnchorable(anchorable, setAsActiveContent);
@@ -163,7 +163,7 @@ namespace Zametek.WindowsEx.AvalonDock
         {
             if (dockingManager == null)
             {
-                throw new ArgumentNullException("dockingManager");
+                throw new ArgumentNullException(nameof(dockingManager));
             }
             return dockingManager.HideAnchorable(content, true);
         }
@@ -181,7 +181,7 @@ namespace Zametek.WindowsEx.AvalonDock
         {
             if (dockingManager == null)
             {
-                throw new ArgumentNullException("dockingManager");
+                throw new ArgumentNullException(nameof(dockingManager));
             }
             if (content == null)
             {
@@ -197,12 +197,12 @@ namespace Zametek.WindowsEx.AvalonDock
             {
                 return true;
             }
-            var item = dockingManager.GetLayoutItemFromModel(anchorable) as LayoutAnchorableItem;
-            if (item != null)
+            if (dockingManager.GetLayoutItemFromModel(anchorable) is LayoutAnchorableItem item)
             {
                 item.HideCommand.Execute(true);
             }
-            if (removeAsActiveContent && dockingManager.ActiveContent == content)
+            if (removeAsActiveContent
+                && dockingManager.ActiveContent == anchorable)
             {
                 dockingManager.ActiveContent = null;
             }
@@ -220,7 +220,7 @@ namespace Zametek.WindowsEx.AvalonDock
         {
             if (dockingManager == null)
             {
-                throw new ArgumentNullException("dockingManager");
+                throw new ArgumentNullException(nameof(dockingManager));
             }
             return dockingManager.ShowAnchorable(content, true);
         }
@@ -237,7 +237,7 @@ namespace Zametek.WindowsEx.AvalonDock
         {
             if (dockingManager == null)
             {
-                throw new ArgumentNullException("dockingManager");
+                throw new ArgumentNullException(nameof(dockingManager));
             }
             if (content == null)
             {
@@ -248,15 +248,15 @@ namespace Zametek.WindowsEx.AvalonDock
             {
                 return false;
             }
-            if (!anchorable.IsHidden
-                || !dockingManager.IsActuallyHidden(anchorable))
+            if (anchorable.IsHidden
+                || dockingManager.IsActuallyHidden(anchorable))
             {
-                return true;
+                anchorable.Show();
             }
-            anchorable.Show();
-            if (setAsActiveContent)
+            if (setAsActiveContent
+                && dockingManager.ActiveContent != anchorable)
             {
-                dockingManager.ActiveContent = content;
+                dockingManager.ActiveContent = anchorable;
             }
             return !dockingManager.IsActuallyHidden(anchorable);
         }
@@ -272,7 +272,7 @@ namespace Zametek.WindowsEx.AvalonDock
         {
             if (dockingManager == null)
             {
-                throw new ArgumentNullException("dockingManager");
+                throw new ArgumentNullException(nameof(dockingManager));
             }
             return dockingManager.Layout.Hidden.OfType<T>().Contains(content);
         }
@@ -282,31 +282,33 @@ namespace Zametek.WindowsEx.AvalonDock
         {
             if (dockingManager == null)
             {
-                throw new ArgumentNullException("dockingManager");
+                throw new ArgumentNullException(nameof(dockingManager));
             }
             if (dockingManager.Layout == null)
             {
-                throw new InvalidOperationException("DockingManager Layout property is null");
+                throw new InvalidOperationException(Properties.Resources.DockingManagerLayoutPropertyIsNull);
             }
             if (content == null)
             {
                 return null;
             }
-            T layoutContent = null;
-            content.TypeSwitchOn()
-               .Case<T>(x =>
-               {
-                   layoutContent = x;
-               })
-               .Case<FrameworkElement>(x =>
-               {
-                   layoutContent = dockingManager.Layout.Descendents().OfType<T>().FirstOrDefault(y => y.Content == x)
-                      ?? dockingManager.Layout.Descendents().OfType<T>().FirstOrDefault(y => y.Content == x.DataContext);
-               })
-               .Default(x =>
-               {
-                   layoutContent = dockingManager.Layout.Descendents().OfType<T>().FirstOrDefault(y => y.Content == x);
-               });
+            T layoutContent = dockingManager.Layout.Descendents().OfType<T>().FirstOrDefault(y => y.Content == content);
+            if (layoutContent == null)
+            {
+                content.TypeSwitchOn()
+                   .Case<T>(x =>
+                   {
+                       layoutContent = x;
+                   })
+                   .Case<FrameworkElement>(x =>
+                   {
+                       layoutContent = dockingManager.Layout.Descendents().OfType<T>().FirstOrDefault(y => y.Content == x.DataContext);
+                   })
+                   .Default(x =>
+                   {
+                       layoutContent = dockingManager.Layout.Descendents().OfType<T>().FirstOrDefault(y => (y.Content as FrameworkElement)?.DataContext == x);
+                   });
+            }
             return layoutContent;
         }
 
@@ -315,11 +317,11 @@ namespace Zametek.WindowsEx.AvalonDock
         {
             if (dockingManager == null)
             {
-                throw new ArgumentNullException("dockingManager");
+                throw new ArgumentNullException(nameof(dockingManager));
             }
             if (dockingManager.Layout == null)
             {
-                throw new InvalidOperationException("DockingManager Layout property is null");
+                throw new InvalidOperationException(Properties.Resources.DockingManagerLayoutPropertyIsNull);
             }
             return dockingManager.Layout.Descendents().OfType<T>();
         }
